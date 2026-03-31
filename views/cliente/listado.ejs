@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de Canchas</title>
+    <style>
+        .cancha-card { border: 1px solid #ccc; padding: 15px; margin: 10px; border-radius: 8px; display: inline-block; width: 250px; }
+        .btn { background: #27ae60; color: white; padding: 10px; text-decoration: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Canchas Disponibles</h1>
+    
+    <% if (canchas.length > 0) { %>
+        <% canchas.forEach(cancha => { %>
+            <div class="cancha-card">
+                <h3><%= cancha.nombre %></h3>
+                <p>Precio: $<%= cancha.precio_por_hora %></p>
+                <a href="/cliente/cancha/<%= cancha.id %>" class="btn">Ver Horarios</a>
+            </div>
+        <% }) %>
+    <% } else { %>
+        <p>No hay canchas activas en este momento.</p>
+    <% } %>
+
+    <br><br>
+    <a href="/logout">Cerrar Sesión</a>
+</body>
+</html>
