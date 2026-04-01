@@ -3,46 +3,30 @@ const Horario = require('../models/horario');
 const Cancha = require('../models/cancha');
 
 const reservaController = {
-    // 1. Crear la reserva (Lógica para tu tabla con horario_id)
-    crearReserva: async (req, res) => {
-        try {
-            const { horarioId } = req.body;
-            const usuarioId = req.session.userId;
-
-            if (!usuarioId) {
-                return res.status(401).send('Debes iniciar sesión');
-            }
-
-            // 1. Buscar el horario y traer los datos de la cancha para el precio
-            // Usamos el alias 'datosCancha' que definimos en app.js
-            const horario = await Horario.findByPk(horarioId, {
-                include: [{ model: Cancha, as: 'datosCancha' }]
-            });
-
-            if (!horario || !horario.disponible) {
-                return res.status(400).send('El horario ya no está disponible o no existe.');
-            }
-
-            // 2. Crear la reserva usando los nombres reales de tu tabla en Postgres
-            await Reserva.create({
-                usuarioId: usuarioId,
-                horarioId: horarioId,
-                totalPago: horario.datosCancha.precioHora, // Usamos el precio de la cancha
-                estado: 'confirmada' // Según tu CHECK constraint
-            });
-
-            // 3. Marcar el horario como ocupado
-            await horario.update({ disponible: false });
-
-            res.redirect('/cliente/mis-reservas');
-
-        } catch (error) {
-            console.error('Error al reservar:', error);
-            res.status(500).send('Error interno al procesar la reserva');
+crearReserva: async (req, res) => {
+    try {
+        const { horarioId } = req.body;
+        const usuarioId = req.session.userId;
+        const horario = await Horario.findByPk(horarioId);
+        
+        if (!horario || !horario.disponible) {
+            return res.send('<script>alert("Este horario ya ha sido reservado por otra persona."); window.location="/cliente/listado";</script>');
         }
-    },
+        await Reserva.create({
+            usuarioId,
+            horarioId,
+            totalPago: 150.00, 
+            estado: 'confirmada'
+        });
 
-    // 2. Listar reservas (Lógica para que Alex vea los nombres de las canchas)
+        await horario.update({ disponible: false });
+
+        res.redirect('/cliente/mis-reservas');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error al procesar reserva');
+    }
+},
     misReservas: async (req, res) => {
         try {
             const usuarioId = req.session.userId;
@@ -52,13 +36,13 @@ const reservaController = {
                 include: [
                     {
                         model: Horario,
-                        as: 'detalleHorario', // Alias definido en app.js
+                        as: 'detalleHorario', 
                         include: [
-                            { model: Cancha, as: 'datosCancha' } // Alias definido en app.js
+                            { model: Cancha, as: 'datosCancha' } 
                         ]
                     }
                 ],
-                order: [['createdAt', 'DESC']]
+                order: [['id', 'DESC']]
             });
 
             res.render('cliente/mis-reservas', { reservas });
@@ -66,7 +50,32 @@ const reservaController = {
             console.error('Error al cargar reservas:', error);
             res.status(500).send('Error al cargar tus reservas');
         }
+    },
+
+    cancelarReserva: async (req, res) => {
+    try {
+        const { id } = req.params; 
+
+        const reserva = await Reserva.findByPk(id);
+        if (!reserva) return res.status(404).send('Reserva no encontrada');
+
+        
+        await reserva.update({ estado: 'cancelada' });
+
+    
+        await Horario.update(
+            { disponible: true },
+            { where: { id: reserva.horarioId } }
+        );
+
+        res.redirect('/cliente/mis-reservas');
+    } catch (error) {
+        console.error('Error al cancelar:', error);
+        res.status(500).send('Error al cancelar la reserva');
     }
+}
 };
+
+
 
 module.exports = reservaController;

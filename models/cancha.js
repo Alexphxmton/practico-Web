@@ -12,7 +12,6 @@ const Cancha = sequelize.define('canchas', {
         allowNull: false
     },
     tipoId: {
-        // Mapea a la columna 'tipo_id' que vimos en tu DBeaver
         type: DataTypes.INTEGER,
         field: 'tipo_id', 
         allowNull: false,
@@ -22,13 +21,11 @@ const Cancha = sequelize.define('canchas', {
         }
     },
     precioHora: {
-        // Mapea a 'precio_por_hora'
         type: DataTypes.DECIMAL(10, 2),
         field: 'precio_por_hora',
         allowNull: false
     },
     estado: {
-        // IMPORTANTE: Solo acepta 'activa' o 'inactiva' por el Check Constraint de tu DB
         type: DataTypes.STRING(50),
         allowNull: false,
         defaultValue: 'activa',
@@ -43,10 +40,10 @@ const Cancha = sequelize.define('canchas', {
         defaultValue: 'default-cancha.jpg'
     }
 }, {
-    // Configuración para coincidir con tus columnas de DBeaver
+
     timestamps: true, 
-    createdAt: 'createdat', // Mapeo a minúsculas
-    updatedAt: 'updatedat', // Mapeo a minúsculas
+    createdAt: 'createdat', 
+    updatedAt: 'updatedat', 
     freezeTableName: true,
     tableName: 'canchas'
 });

@@ -12,7 +12,7 @@ const Reserva = sequelize.define('reservas', {
         validate: { isIn: [['confirmada', 'cancelada']] } 
     }
 }, {
-    timestamps: true,
+    timestamps: false,
     freezeTableName: true
 });
 
