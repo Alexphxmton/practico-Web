@@ -30,10 +30,10 @@ const authController = {
                 rol: 'cliente' 
             });
 
-            console.log(`✅ Usuario registrado: ${nombre}`);
+            console.log(` Usuario registrado: ${nombre}`);
             res.redirect('/login');
         } catch (error) {
-            console.error('❌ Error en registro:', error);
+            console.error(' Error en registro:', error);
             res.status(500).send('Error interno en el servidor');
         }
     },
@@ -53,15 +53,15 @@ const authController = {
             req.session.userNombre = usuario.nombre;
             req.session.userRol = usuario.rol;
 
-            console.log(`🚀 Sesión iniciada para: ${usuario.nombre}`);
+            console.log(`Sesión iniciada para: ${usuario.nombre}`);
             if (usuario.rol === 'admin') {
-                res.redirect('/admin/dashboard');
+                res.redirect('/admin/adminPrinc');
             } else {
                 res.redirect('/cliente/listado');
             }
 
         } catch (error) {
-            console.error('❌ Error en login:', error);
+            console.error(' Error en login:', error);
             res.status(500).send('Error interno en el servidor');
         }
     },
