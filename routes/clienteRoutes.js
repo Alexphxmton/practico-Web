@@ -21,4 +21,10 @@ router.post('/reservar', isLoggedIn, reservaController.crearReserva);
 
 router.post('/cancelar/:id', isLoggedIn, reservaController.cancelarReserva);
 
+
+router.get('/resena/:id', canchaController.mostrarFormularioResena);
+
+
+router.post('/resena/guardar', canchaController.guardarResena);
+
 module.exports = router;

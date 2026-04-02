@@ -4,88 +4,111 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mis Reservas - Gestión de Canchas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f8f9fa; padding: 20px; color: #333; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0b0f19; padding: 20px; color: #e9ecef; }
         .container { max-width: 900px; margin: auto; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #2d3748; padding-bottom: 15px; }
         
         .reserva-card { 
-            background: white; 
-            border-radius: 10px; 
-            padding: 20px; 
-            margin-bottom: 15px; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: #1a202c; 
+            border-radius: 12px; 
+            padding: 25px; 
+            margin-bottom: 20px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-left: 5px solid #3498db;
+            border-left: 6px solid #3182ce;
+            transition: transform 0.2s;
         }
+        .reserva-card:hover { transform: scale(1.01); }
 
-        .info h3 { margin: 0 0 10px 0; color: #2c3e50; }
-        .info p { margin: 5px 0; font-size: 0.95rem; }
+        .info h3 { margin: 0 0 10px 0; color: #63b3ed; font-size: 1.4rem; }
+        .info p { margin: 6px 0; font-size: 0.95rem; color: #a0aec0; }
         
         .status-badge {
-            padding: 5px 12px;
+            padding: 6px 14px;
             border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: bold;
+            font-size: 0.75rem;
+            font-weight: 800;
             text-transform: uppercase;
         }
-        .status-confirmada { background: #d4edda; color: #155724; }
-        .status-cancelada { background: #f8d7da; color: #721c24; }
+        .status-confirmada { background: #2f855a; color: #f0fff4; }
+        .status-cancelada { background: #9b2c2c; color: #fff5f5; }
+        .status-pagada { background: #2b6cb0; color: #ebf8ff; }
 
-        .btn-cancelar {
-            background-color: #e74c3c;
-            color: white;
+        .btn-action {
             border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
+            padding: 10px 20px;
+            border-radius: 8px;
             cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
             transition: 0.3s;
+            font-size: 0.9rem;
         }
-        .btn-cancelar:hover { background-color: #c0392b; }
+        .btn-cancelar { background-color: #e53e3e; color: white; }
+        .btn-cancelar:hover { background-color: #c53030; }
         
-        .btn-volver { text-decoration: none; color: #3498db; font-weight: bold; }
-        .no-reservas { text-align: center; padding: 50px; background: white; border-radius: 10px; }
+        .btn-resena { background-color: #ecc94b; color: #2d3748; margin-top: 10px; }
+        .btn-resena:hover { background-color: #d69e2e; }
+
+        .btn-volver { text-decoration: none; color: #63b3ed; font-weight: bold; display: flex; align-items: center; gap: 8px; }
+        .no-reservas { text-align: center; padding: 60px; background: #1a202c; border-radius: 15px; border: 1px dashed #4a5568; }
+        
+        .monto { color: #48bb78; font-weight: bold; font-size: 1.1rem; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header">
-        <h1>Mis Reservas</h1>
-        <a href="/cliente/listado" class="btn-volver">← Volver a canchas</a>
+        <h1><i class="fas fa-calendar-check"></i> Mis Reservas</h1>
+        <a href="/cliente/listado" class="btn-volver"><i class="fas fa-arrow-left"></i> Volver a canchas</a>
     </div>
 
     <% if (reservas && reservas.length > 0) { %>
         <% reservas.forEach(reserva => { %>
-            <div class="reserva-card" style="<%= reserva.estado === 'cancelada' ? 'border-left-color: #bdc3c7; opacity: 0.8;' : '' %>">
+            <div class="reserva-card" style="<%= reserva.estado === 'cancelada' ? 'border-left-color: #4a5568; opacity: 0.6;' : '' %>">
                 <div class="info">
                     <h3><%= reserva.detalleHorario.datosCancha.nombre %></h3>
-                    <p><strong>Fecha:</strong> <%= reserva.detalleHorario.fecha %></p>
-                    <p><strong>Horario:</strong> <%= reserva.detalleHorario.horaInicio %> - <%= reserva.detalleHorario.horaFin %></p>
-                    <p><strong>Pago:</strong> $<%= reserva.totalPago %></p>
-                    <p>
+                    <p><i class="far fa-calendar-alt"></i> <strong>Fecha:</strong> <%= reserva.detalleHorario.fecha %></p>
+                    <p><i class="far fa-clock"></i> <strong>Horario:</strong> 
+                        <%= reserva.detalleHorario.horaInicio.slice(0,5) %> - <%= reserva.detalleHorario.horaFin.slice(0,5) %>
+                    </p>
+                    <p><i class="fas fa-money-bill-wave"></i> <strong>Pago:</strong> <span class="monto">Bs. <%= reserva.totalPago %></span></p>
+                    <div style="margin-top: 15px;">
                         <span class="status-badge status-<%= reserva.estado %>">
                             <%= reserva.estado %>
                         </span>
-                    </p>
+                    </div>
                 </div>
 
-                <div class="acciones">
-                    <% if (reserva.estado === 'confirmada') { %>
-                        <form action="/cliente/cancelar/<%= reserva.id %>" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas cancelar esta reserva?')">
-                            <button type="submit" class="btn-cancelar">Cancelar</button>
-                        </form>
+                <div class="acciones" style="text-align: right;">
+                    <% if (reserva.estado === 'confirmada' || reserva.estado === 'pagada') { %>
+                        <a href="/cliente/resena/<%= reserva.id %>" class="btn-action btn-resena">
+                            <i class="fas fa-star"></i> Dejar Reseña
+                        </a>
+                        
+                        <div style="margin-top: 10px;">
+                            <% if (reserva.estado === 'confirmada') { %>
+                                <form action="/cliente/cancelar/<%= reserva.id %>" method="POST" onsubmit="return confirm('¿Seguro que deseas cancelar? El horario se liberará.')">
+                                    <button type="submit" class="btn-action btn-cancelar">Cancelar</button>
+                                </form>
+                            <% } %>
+                        </div>
                     <% } %>
                 </div>
             </div>
         <% }) %>
     <% } else { %>
         <div class="no-reservas">
-            <p>Todavía no has realizado ninguna reserva.</p>
+            <i class="fas fa-folder-open fa-3x" style="color: #4a5568; margin-bottom: 20px;"></i>
+            <p style="font-size: 1.2rem;">Todavía no has realizado ninguna reserva.</p>
             <br>
-            <a href="/cliente/listado" style="background: #3498db; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none;">Ver Canchas Disponibles</a>
+            <a href="/cliente/listado" style="background: #3182ce; color: white; padding: 12px 25px; border-radius: 8px; text-decoration: none; font-weight: bold;">Explorar Canchas</a>
         </div>
     <% } %>
 </div>
