@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -49,10 +50,33 @@
                                 <%= resena.propietario ? resena.propietario.nombre : 'Anónimo' %>
                             </small>
 
+=======
+<div class="container py-5">
+    <h2 class="text-white text-center mb-4">Reseñas y Comentarios</h2>
+    
+    <div class="row g-3">
+        <% if (resenas.length > 0) { %>
+            <% resenas.forEach(resena => { %>
+                <div class="col-md-6">
+                    <div class="card shadow-sm" style="background-color: #85a1b5;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <h6 class="fw-bold mb-1"><%= resena.datosCancha.nombre %></h6>
+                                <span class="text-warning">
+                                    <% for(let i=0; i < resena.calificacion; i++) { %>★<% } %>
+                                </span>
+                            </div>
+                            <p class="mb-2 small">"<%= resena.comentario %>"</p>
+                            <hr class="my-1">
+                            <footer class="blockquote-footer text-dark" style="font-size: 0.75rem;">
+                                Por: <%= resena.propietario ? resena.propietario.nombre : 'Anónimo' %>
+                            </footer>
+>>>>>>> eb34a7bd17f1357db7ec164bde1322ba9b407baa
                         </div>
                     </div>
                 </div>
             <% }) %>
+<<<<<<< HEAD
 
         <% } else { %>
 
@@ -69,3 +93,10 @@
 
 </body>
 </html>
+=======
+        <% } else { %>
+            <div class="col-12 text-center text-white">Aún no hay reseñas de usuarios.</div>
+        <% } %>
+    </div>
+</div>
+>>>>>>> eb34a7bd17f1357db7ec164bde1322ba9b407baa

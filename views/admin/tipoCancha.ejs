@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -91,13 +92,42 @@
 
                     </form>
 
+=======
+<div class="container py-5 text-white">
+    <h2 class="text-center mb-4">Registrar Nueva Cancha</h2>
+    
+    <div class="row justify-content-center">
+        <div class="col-md-6 p-4 rounded shadow" style="background-color: rgba(133, 161, 181, 0.9);">
+            <form action="/admin/canchas/guardar" method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Nombre de la Cancha</label>
+                    <input type="text" name="nombre" class="form-control" placeholder="Ej: Cancha Central" required>
                 </div>
-            </div>
 
+                <div class="mb-3">
+                    <label class="form-label">Tipo de Deporte</label>
+                    <select name="tipo_id" class="form-select" required>
+                        <option value="">-- Seleccione un Deporte --</option>
+                        <% tipos.forEach(tipo => { %>
+                            <option value="<%= tipo.id %>"><%= tipo.descripcion %></option>
+                        <% }) %>
+                    </select>
+>>>>>>> eb34a7bd17f1357db7ec164bde1322ba9b407baa
+                </div>
+
+<<<<<<< HEAD
+=======
+                <div class="mb-3">
+                    <label class="form-label">Precio por Hora (Bs)</label>
+                    <input type="number" name="precio_por_hora" class="form-control" step="0.01" required>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-success">Guardar Cancha</button>
+                    <a href="/admin/canchas" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+>>>>>>> eb34a7bd17f1357db7ec164bde1322ba9b407baa
         </div>
     </div>
-
 </div>
-
-</body>
-</html>
