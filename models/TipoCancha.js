@@ -1,19 +1,22 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
-const TipoCancha = sequelize.define('tipo_canchas', {
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
+const TipoCancha = sequelize.define('TipoCancha', {
+    id: { 
+        type: DataTypes.INTEGER, 
+        primaryKey: true, 
+        autoIncrement: true 
     },
-    nombre: {
-        type: DataTypes.STRING(50),
-        allowNull: false
+    descripcion: { 
+        type: DataTypes.STRING, 
+        allowNull: false,
+        field: 'nombre' 
     }
 }, {
-    timestamps: false,
-    freezeTableName: true
+    tableName: 'tipo_canchas', 
+    timestamps: true,
+    createdAt: 'createdat',
+    updatedAt: 'updatedat'
 });
 
 module.exports = TipoCancha;

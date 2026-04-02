@@ -12,6 +12,7 @@ const Cancha = require('./models/cancha');
 const TipoCancha = require('./models/TipoCancha');
 const Horario = require('./models/horario');
 const Reserva = require('./models/reserva');
+const Resena = require('./models/resenas');
 
 // RELACIONES
 Cancha.belongsTo(TipoCancha, { foreignKey: 'tipo_id', as: 'detalleTipo' });
@@ -36,6 +37,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+//Relaciones para reseñas
+
+Resena.belongsTo(Usuario, { foreignKey: 'usuario_id', as: 'autorResena' }); 
+Usuario.hasMany(Resena, { foreignKey: 'usuario_id', as: 'susResenas' });
+
+Resena.belongsTo(Cancha, { foreignKey: 'cancha_id', as: 'datosCancha' });
+Cancha.hasMany(Resena, { foreignKey: 'cancha_id', as: 'todasLasResenas' });
+
 // SESIONES
 app.use(session({
     secret: process.env.SESSION_SECRET || 'clave_secreta_para_desarrollo',
@@ -54,6 +64,9 @@ app.use((req, res, next) => {
     next();
 });
 
+
+
+Resena.belongsTo(Usuario, { as: 'propietario', foreignKey: 'usuario_id' });
 // RUTAS
 const authRoutes = require('./routes/authRoutes');
 const clienteRoutes = require('./routes/clienteRoutes');
